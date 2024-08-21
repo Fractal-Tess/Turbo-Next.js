@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* White */
+    --background: 0 0% 100%; /* SET */
+
+    /* White content */
+    --foreground: 0 0% 15%; /* SET */
+
+    /* Unused */
+    --card: 0 0% 100%; /* UNSET */
+    /* Unused */
+    --card-foreground: 222.2 84% 4.9%; /* UNSET */
+
+    /* Unused */
+    --popover: 0 0% 100%; /* UNSET */
+    /* Unused */
+    --popover-foreground: 222.2 84% 4.9%; /* UNSET */
+
+    /* Yellow */
+    --primary: 49.5 96.8% 48.6%;
+    /* Yello content */
+    --primary-foreground: 0 0% 100%; /* SET */
+
+    /* Unused */
+    --secondary: 210 40% 96.1%; /* UNSET */
+    /* Unused */
+    --secondary-foreground: 222.2 47.4% 11.2%; /* UNSET */
+
+    /* Gray */
+    --muted: 0 0% 43.9%; /* SET */
+    /* White */
+    --muted-foreground: 0 0% 100%; /* SET */
+
+    /* Unused  */
+    --accent: 210 40% 96.1%; /* UNSET */
+    /* Unused  */
+    --accent-foreground: 222.2 47.4% 11.2%; /* UNSET */
+
+    /* Blue */
+    --link: 214.6 100% 50%; /* SET */
+
+    /* Muted white */
+    --aside: 60 6.7% 97.1%; /* SET */
+
+    /* Unused  */
+    --destructive: 0 84.2% 60.2%; /* UNSET */
+    /* Unused  */
+    --destructive-foreground: 210 40% 98%; /* UNSET */
+    /* Unused  */
+    --border: 214.3 31.8% 91.4%; /* UNSET */
+    /* Unused  */
+    --input: 214.3 31.8% 91.4%; /* UNSET */
+    /* Unused  */
+    --ring: 222.2 84% 4.9%; /* UNSET */
+
+    --radius: 0.5rem;
+  }
+
+  /* Currently unused because we do not support dark mode  */
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 47.9 95.8% 53.1%;
+    --primary-foreground: 26 83.3% 14.1%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 35.5 91.7% 32.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .dev {
+    @apply border-2 border-red-500;
+  }
+}

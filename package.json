@@ -1,0 +1,33 @@
+{
+  "name": "hint.gift",
+  "private": true,
+  "scripts": {
+    "env:load": "turbo env:load",
+    "build": "turbo build --ui=tui",
+    "dev": "turbo dev --ui=tui",
+    "lint": "turbo lint --ui=tui",
+    "drizzle": "pnpm run --filter @repo/drizzle drizzle",
+    "format": "turbo run format --continue -- --write \"**/*.{ts,tsx,md,svelte}\" --cache --cache-location node_modules/.cache/.prettiercache ",
+    "lint:fix": "turbo run lint:fix",
+    "pre-commit": "lint-staged",
+    "lint-staged": "lint-staged",
+    "type-check": "turbo run type-check"
+  },
+  "dependencies": {
+    "turbo": "2.0.12"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/types": "^19.0.3",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "conventional-changelog-atom": "^5.0.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.5"
+  },
+  "packageManager": "pnpm@9.0.5",
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20"
+  }
+}

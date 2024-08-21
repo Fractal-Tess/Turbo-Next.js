@@ -1,0 +1,22 @@
+{
+  "name": "@repo/trpc",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "tsc && eslint ."
+  },
+  "dependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/drizzle": "workspace:*",
+    "@trpc/client": "11.0.0-rc.364",
+    "@trpc/server": "11.0.0-rc.364",
+    "oslo": "^1.2.1",
+    "superjson": "^2.2.1",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.4",
+    "zod": "3.23.8"
+  }
+}

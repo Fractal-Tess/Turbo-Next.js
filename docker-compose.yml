@@ -1,0 +1,156 @@
+name: hint-gift
+services:
+  mysql:
+    image: mysql:9.0.1
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - web-network
+      - analytics-network
+    entrypoint:
+      sh -c "
+        echo 'CREATE DATABASE IF NOT EXISTS web; CREATE DATABASE IF NOT EXISTS analytics;' > /docker-entrypoint-initdb.d/init.sql;
+        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+
+
+  analytics_migrator:
+    build:
+      context: .
+      dockerfile: ./apps/migrator/docker/Analytics.Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - analytics-network
+    environment:
+      MYSQL_DB_DATABASE: analytics
+      MYSQL_DB_USER: root
+      MYSQL_DB_PASSWORD: rootpassword
+      MYSQL_DB_HOST: mysql
+      MYSQL_DB_PORT: 3306
+
+  web_migrator:
+    build:
+      context: .
+      dockerfile: ./apps/migrator/docker/Web.Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - web-network
+    environment:
+      MYSQL_DB_DATABASE: web
+      MYSQL_DB_USER: root
+      MYSQL_DB_PASSWORD: rootpassword
+      MYSQL_DB_HOST: mysql
+      MYSQL_DB_PORT: 3306
+
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+      web_migrator:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+    networks:
+      - web-network
+    environment:
+      MYSQL_DB_DATABASE: web
+      MYSQL_DB_USER: root
+      MYSQL_DB_PASSWORD: rootpassword
+      MYSQL_DB_HOST: mysql
+      MYSQL_DB_PORT: 3306
+
+      AUTHENTIK_CLIENT_ID: xO1R92Ckxtl9rk2XVMcO5ABCo0cVfnPzj4xIvUiS
+      AUTHENTIK_SECRET: paFFis07NyAcaboaEsGpkQfM1mKxNVao26To2jifzYthvTIoEF7wNxm2vdczXtlTx6ydswoOvMHm2PpornEwgMyz32cQwijUb0282lzGiWrpKNY1EGFuEkAgvPaMptyf
+      AUTHENTIK_FQDN: https://auth.hint.gifts
+      AUTHENTIK_USER_GROUP: webers
+
+      FQDN: http://localhost:3000
+
+  analytics:
+    build:
+      context: .
+      dockerfile: ./apps/analytics/Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+      analytics_migrator:
+        condition: service_completed_successfully
+    ports:
+      - "4000:4000"
+    networks:
+      - analytics-network
+    environment:
+      MYSQL_DB_DATABASE: analytics
+      MYSQL_DB_USER: root
+      MYSQL_DB_PASSWORD: rootpassword
+      MYSQL_DB_HOST: mysql
+      MYSQL_DB_PORT: 3306
+
+      AUTHENTIK_CLIENT_ID: 38H77soxuEalfmFcNSh2dr751yw2GvRJjQMPpD3Y
+      AUTHENTIK_SECRET: s7IJFPhjbSzkeTwENBsvNpWtCjJDeYaJeyOXRnQckEZiJM5SY2pEzp6FLXpzVr9hr7k7N6p5xNqi8DwhHbCDVOCYQg6cT1EaFfx5Kx2xcqsaJSwqismXFtjssNH73whQ
+      AUTHENTIK_FQDN: https://auth.hint.gifts
+      AUTHENTIK_USER_GROUP: analyzers
+      AUTHENTIK_ADMIN_GROUP: admins
+
+      INFLUX_URL: https://influx-hint-gift.app.jet-black.xyz
+      INFLUX_TOKEN=: yhA9nrVSoPNks5_iIhI4skc496J0fUvie7Sam7x_PZH9CrmMzFfIpf7uBrbLAFHU_8zMJ23_mGV9IgmixCreg==
+      INFLUX_ORG: ivo-tech
+      INFLUX_BUCKET: hint-gift
+      INFLUX_EVENT_PRECISION: ms
+
+      FQDN: http://localhost:4000
+
+  analytics_server:
+    build:
+      context: .
+      dockerfile: ./apps/analytics-server/Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+      analytics_migrator:
+        condition: service_completed_successfully
+    ports:
+      - "5001:5001"
+    networks:
+      - analytics-network
+    environment:
+      MYSQL_DB_DATABASE: analytics
+      MYSQL_DB_USER: root
+      MYSQL_DB_PASSWORD: rootpassword
+      MYSQL_DB_HOST: mysql
+      MYSQL_DB_PORT: 3306
+
+      INFLUX_URL: https://influx-hint-gift.app.jet-black.xyz
+      INFLUX_TOKEN: yhA9nrVSoPNks5_iIhI4skc496J0fUvie7Sam7x_PZH9CrmMzFfIpf7uBrbLAFHU_8zMJ23_mGV9IgmixCreg==
+      INFLUX_ORG: ivo-tech
+      INFLUX_BUCKET: hint-gift
+      INFLUX_EVENT_PRECISION: ms
+
+      PORT: 5001
+      HOST: 0.0.0.0
+      FQDN: http://localhost:5001
+
+
+volumes:
+  mysql_data:
+
+networks:
+  web-network:
+  analytics-network:

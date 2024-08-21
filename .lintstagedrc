@@ -1,0 +1,6 @@
+{
+  "apps/**/*.{js,ts,svelte,svx}": ["eslint --fix"],
+  "packages/ui/**/*.{js,ts,tsx,jsx}": ["eslint --fix"],
+  "packages/drizzle/**/*.{js,ts,tsx,jsx}": ["eslint --fix"],
+  "packages/trpc/**/*.{js,ts,tsx,jsx}": ["eslint --fix"]
+}
