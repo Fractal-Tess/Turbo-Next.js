@@ -15,17 +15,16 @@
     ]
   },
   "include": [
-    "./.eslintrc.cjs",
+    ".eslintrc.cjs",
     "../../packages/ui/**/*.tsx",
     "../../packages/ui/**/*.ts",
-    "../../packages/trpc/**/*.ts",
-    "../../packages/drizzle/**/*.ts",
-    "./next-env.d.ts",
+    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "../../prettier.config.js"
   ],
-  "exclude": ["node_modules", "./.nextjs"]
+  "exclude": ["node_modules"]
 }

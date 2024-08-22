@@ -1,9 +1,10 @@
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@ui/components/accordion';
-import { Button } from '@ui/components/button';
-import { Separator } from '@ui/components/separator';
 import { Plus, Trash } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import * as z from 'zod';
+
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@ui/components/accordion';
+import { Button } from '@ui/components/button';
+import { Separator } from '@ui/components/separator';
 
 import { beautifyObjectName } from '../utils';
 import AutoFormObject from './object';

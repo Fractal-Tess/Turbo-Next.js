@@ -1,3 +1,6 @@
+import { useForm, useFormContext } from 'react-hook-form';
+import * as z from 'zod';
+
 import {
   Accordion,
   AccordionContent,
@@ -5,8 +8,6 @@ import {
   AccordionTrigger
 } from '@ui/components/accordion';
 import { FormField } from '@ui/components/form';
-import { useForm, useFormContext } from 'react-hook-form';
-import * as z from 'zod';
 
 import { DEFAULT_ZOD_HANDLERS, INPUT_COMPONENTS } from '../config';
 import resolveDependencies from '../dependencies';

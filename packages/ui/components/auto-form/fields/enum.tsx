@@ -1,3 +1,5 @@
+import * as z from 'zod';
+
 import { FormControl, FormItem, FormMessage } from '@ui/components/form';
 import {
   Select,
@@ -6,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@ui/components/select';
-import * as z from 'zod';
 
 import AutoFormLabel from '../common/label';
 import AutoFormTooltip from '../common/tooltip';

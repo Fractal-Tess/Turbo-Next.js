@@ -3,10 +3,11 @@
 import type { Container, SingleOrMultiple } from '@tsparticles/engine';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
-import { cn } from '@ui/lib/utils';
 import { motion, useAnimation } from 'framer-motion';
 import { useId } from 'react';
 import { useEffect, useState } from 'react';
+
+import { cn } from '@ui/lib/utils';
 
 type ParticlesProps = {
   id?: string;

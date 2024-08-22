@@ -1,9 +1,10 @@
-import { buttonVariants } from '@ui/components/button';
-import { IconArrowLeft, IconBrandDiscordFilled } from '@ui/icons/tabler';
-import { cn } from '@ui/lib/utils';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { buttonVariants } from '@ui/components/button';
+import { IconArrowLeft, IconBrandDiscordFilled } from '@ui/icons/tabler';
+import { cn } from '@ui/lib/utils';
 
 export const metadata = {
   title: 'Sign-In',

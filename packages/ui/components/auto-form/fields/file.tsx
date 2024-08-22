@@ -1,7 +1,8 @@
-import { FormControl, FormItem, FormMessage } from '@ui/components/form';
-import { Input } from '@ui/components/input';
 import { Trash2 } from 'lucide-react';
 import { ChangeEvent, useState } from 'react';
+
+import { FormControl, FormItem, FormMessage } from '@ui/components/form';
+import { Input } from '@ui/components/input';
 
 import AutoFormLabel from '../common/label';
 import AutoFormTooltip from '../common/tooltip';

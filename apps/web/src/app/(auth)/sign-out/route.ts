@@ -1,6 +1,7 @@
+import { revalidatePath } from 'next/cache';
+
 import { ENV } from '$/env';
 import { invalidateSession, validateRequest } from '$/server/auth';
-import { revalidatePath } from 'next/cache';
 
 export async function GET(): Promise<Response> {
   const { session } = await validateRequest();

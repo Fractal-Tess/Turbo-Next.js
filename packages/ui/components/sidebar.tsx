@@ -1,9 +1,10 @@
 'use client';
 
 import { IconMenu2, IconX } from '@tabler/icons-react';
-import { cn } from '@ui/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { createContext, useContext, useState } from 'react';
+
+import { cn } from '@ui/lib/utils';
 
 interface Links {
   label: string;

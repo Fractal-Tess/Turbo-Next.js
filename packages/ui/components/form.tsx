@@ -1,7 +1,5 @@
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
-import { Label } from '@ui/components/label';
-import { cn } from '@ui/lib/utils';
 import { cva } from 'class-variance-authority';
 import * as React from 'react';
 import {
@@ -12,6 +10,9 @@ import {
   FormProvider,
   useFormContext
 } from 'react-hook-form';
+
+import { Label } from '@ui/components/label';
+import { cn } from '@ui/lib/utils';
 
 const formVariant = cva('', {
   variants: {

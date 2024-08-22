@@ -1,46 +1,32 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": [
-    "NEXT_PUBLIC_EXAMPLE",
-
-    "DISCORD_CLIENT_ID",
-    "DISCORD_CLIENT_SECRET",
-
-    "MYSQL_MIGRATOR_RETRIES",
-    "MYSQL_DB_HOST",
-    "MYSQL_DB_PORT",
-    "MYSQL_DB_USER",
-    "MYSQL_DB_PASSWORD",
-    "MYSQL_DB_DATABASE",
-
-    "FQDN",
-    "HOSTNAME",
-    "PORT",
-
-    "VERCEL_URL",
-    "VERCEL",
-
-    "NODE_ENV",
-
-    "SKIP_ENV_VALIDATION"
-  ],
+  "ui": "tui",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.*"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "env:load": {
-      "dependsOn": ["^env:load"],
-      "outputs": [".env"]
+      "env": [
+        "MYSQL_DB_*",
+        "DISCORD_CLIENT_*",
+        "NEXT_PUBLIC_EXAMPLE",
+        "PORT",
+        "HOST",
+        "FQDN",
+        "NODE_ENV",
+        "VERCEL_URL",
+        "SKIP_ENV_VALIDATION"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "format": {
-      "outputs": ["node_modules/.cache/.prettiercache"],
-      "outputLogs": "new-only"
     },
     "lint": {
       "dependsOn": ["^lint"],

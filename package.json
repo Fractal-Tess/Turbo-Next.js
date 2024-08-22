@@ -7,7 +7,7 @@
     "dev": "turbo dev --ui=tui",
     "lint": "turbo lint --ui=tui",
     "drizzle": "pnpm run --filter @repo/drizzle drizzle",
-    "format": "turbo run format --continue -- --write \"**/*.{ts,tsx,md,svelte}\" --cache --cache-location node_modules/.cache/.prettiercache ",
+    "format": "prettier --write \"**/*.{ts,tsx,md,js,cjs,mjs}\" --cache --cache-location node_modules/.cache/.prettiercache ",
     "lint:fix": "turbo run lint:fix",
     "pre-commit": "lint-staged",
     "lint-staged": "lint-staged",

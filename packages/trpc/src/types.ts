@@ -1,4 +1,4 @@
-import type { SelectUser } from '@repo/drizzle/schema';
+import type { SelectUser } from '@repo/drizzle';
 
 export type ValidateRequest = () => Promise<
   | {

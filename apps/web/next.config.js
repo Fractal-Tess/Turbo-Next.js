@@ -12,8 +12,7 @@ jiti('./src/env.ts');
 
 /** @type {import("next").NextConfig} */
 const config = {
-  transpilePackages: ['@repo/ui', '@repo/drizzle', '@repo/trpc'],
-  output: 'standalone'
+  transpilePackages: ['@repo/ui', '@repo/drizzle', '@repo/trpc']
 };
 
 export default config;
