@@ -1,19 +1,23 @@
 # Turborepo
 
-Turborepo is a powerful build system for JavaScript and TypeScript monorepos. It optimizes the build process by caching task outputs and running tasks in parallel. This documentation will guide you through the build process and how to authorize Turbo to save artifacts.
+[Turborepo](https://turbo.build/repo/docs) is a powerful build system for JavaScript and TypeScript monorepos. It optimizes the build process by caching task outputs and running tasks in parallel. This documentation will guide you through the ideology of using this template and how to configure it to your needs.
 
 ## Table of Contents
 
-1. [Introduction](#turborepo)
-2. [Tasks](#tasks)
-   1. [Task Order](#task-order)
-   2. [^ Syntax](#-syntax)
-   3. [In-Package Task Order](#in-package-task-order)
-3. [Configuring Tasks](#tasks-1)
-
 ## Tasks
 
-Each key in the tasks object represents a task that can be executed by `turbo run`. Turborepo will search monorepo packages for scripts in `package.json` that match the task name.
+## Table of Contents
+
+- [Turborepo](#turborepo)
+  - [Table of Contents](#table-of-contents)
+  - [Tasks](#tasks)
+    - [Task Order](#task-order)
+    - [In-Package Task Order](#in-package-task-order)
+    - [Specifying Outputs](#specifying-outputs)
+    - [Specifying Inputs](#specifying-inputs)
+
+
+Each key in the `tasks` object is a task that can be executed by `turbo run`. Turborepo will search your packages for scripts in their `package.json` that have the same name as the task.
 
 ### Task Order
 
@@ -29,17 +33,61 @@ Use the `dependsOn` key to specify tasks that must finish before another begins.
 }
 ```
 
-### `^` Syntax
 
 The `^` syntax runs tasks starting at the bottom of the dependency graph. If an application depends on a library with a `build` task, the library's task runs first, followed by the application's.
 
-### In-Package Task Order
+---
 
-To enforce the order of tasks within the same package, list the task name in `dependsOn` without the `^`. For example, to run `build` before `test` in a library.
+Depending on tasks in the same package
+```json
+{
+  "tasks": {
+    "test": {
+      "dependsOn": ["build"] 
+    }
+  }
+}
+```
+---
+Depending on a specific task in a specific package
 
-Here's a more concise version of the documentation:
+```json
+{
+  "tasks": {
+    "lint": {
+      "dependsOn": ["utils#build"] 
+    }
+  }
+}
+```
 
 ---
+
+You can also be more specific about the dependent task, limiting it to a certain package:
+```json
+{
+  "tasks": {
+    "web#lint": {
+      "dependsOn": ["utils#build"] 
+    }
+  }
+}
+```
+
+### No dependencies
+
+Some tasks may not have any dependencies. For example, a task for finding typos in Markdown files likely doesn't need to care about the status of your other tasks. In this case, you can omit the dependsOn key or provide an empty array.
+
+
+```json
+{
+  "tasks": {
+    "spell-check": {
+      "dependsOn": [] 
+    }
+  }
+}
+```
 
 ### Specifying Outputs
 
@@ -65,7 +113,7 @@ The `inputs` key specifies which files contribute to a task's cache hash. By def
 
 Think of these files as files that influence the output of the task and are not tracked by git. These files should be included in the `inputs` key in order for the task to be cached correctly.
 
-For example, if you are inlining the contents of an .env file in your build process, you should include the .env file in the `inputs` key in order for the task to be cached correctly.
+For example, if you are inlining the contents of an .env file in in your build process, you should include the .env file in the `inputs` key in order for the task to be cached correctly.
 
 Example:
 
@@ -73,13 +121,16 @@ Example:
 {
   "tasks": {
     "build": {
-      "inputs": ["**/*.env"]
+      "inputs": [".env"]
     }
   }
 }
 ```
 
-> This feature opts out of all of Turborepo's default inputs behavior, including following along with changes tracked by source control. This means that your .gitignore file will no longer be respected, and you will need to ensure that you do not capture those files with your globs.
+This feature opts out of all of Turborepo's default inputs behavior, including following along with changes tracked by source control. This means that your .gitignore file will no longer be respected, and you will need to ensure that you do not capture those files with your globs.
+
+> Keep in mind that the inputs is a glob of all matching files that are relative to the package's `package.json` file.
+> `turbo.json` is always considered an input.
 
 To restore the default behavior, use the `$TURBO_DEFAULT$` microsyntax.
 
@@ -93,7 +144,7 @@ For this reason, you can use the `$TURBO_DEFAULT$` microsyntax to fine-tune the 
 {
   "tasks": {
     "build": {
-      "inputs": ["$TURBO_DEFAULT$", "**/*.env"]
+      "inputs": ["$TURBO_DEFAULT$", ".env"]
     }
   }
 }
@@ -178,3 +229,37 @@ This option is most useful for development servers or other "watch" tasks.
 ```
 
 Tasks marked with persistent are also interactive by default.
+
+
+### Remote Caching Artifacts
+
+There are two ways to enable the caching of task artifacts:
+
+* Connect to vercel's caching service by running `pnpm turbo login` followed by `pnpm turbo link` - [docs](https://turbo.build/repo/docs/core-concepts/remote-caching)
+* Connect to a self-hosted cache server - [I recommend this](https://github.com/ducktors/turborepo-remote-cache)
+
+
+As for the self hosted method, once the service is hosted, simply create a `.turbo/config.json` file with the following contents:
+
+```json
+
+{
+  # The FQDN of the host running the cache server
+  "apiUrl": "https://example.com",
+  # The same value for the `TURBO_TOKEN` environment veriable used in the server.
+  "token": "xxxxxxxxxxxxxxxxx",
+  # The teamId under which all artifacts will be stored.
+  # The value of this HAS TO begin with `team_`
+  "teamid": "team_example"
+}
+```
+
+In CI/CD, you can can either chose to git commit the `.turbo` folder so the `config.json` file can be used to establish connection to the prefered caching service,
+or you can use the `turbo` cli flags like This
+```bash
+turbo login --api="https://example.com"
+turbo link --api="https://example.com"
+turbo run build --api="https://example.com" --token="xxxxxxxxxxxxxxxxx" --team="team_example"
+```
+
+For more info refer to the original [docs](https://turbo.build/repo/docs/core-concepts/remote-caching)
